@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+    content="UMI on Legs: Making Manipulation Policies Mobile with a Manipulation-Centric Whole-body Controller">
+  <meta name="keywords" content="Robotics, Quadruped, Whole-body Control, Whole-body Manipulation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>
+    Watch Less, Feel More: Sim-to-Real RL for Generalizable Articulated Object Manipulation via Motion Adaptation and Impedance Control
+  </title>
+
+  <link rel="apple-touch-icon" sizes="57x57"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-57x57.png" />
+  <link rel="apple-touch-icon" sizes="60x60"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-60x60.png" />
+  <link rel="apple-touch-icon" sizes="72x72"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-72x72.png" />
+  <link rel="apple-touch-icon" sizes="76x76"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-76x76.png" />
+  <link rel="apple-touch-icon" sizes="114x114"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-114x114.png" />
+  <link rel="apple-touch-icon" sizes="120x120"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-120x120.png" />
+  <link rel="apple-touch-icon" sizes="144x144"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-144x144.png" />
+  <link rel="apple-touch-icon" sizes="152x152"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-152x152.png" />
+  <link rel="apple-touch-icon" sizes="180x180"
+    href="//www-media.stanford.edu/assets/favicon/apple-touch-icon-180x180.png" />
+
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-196x196.png"
+    sizes="196x196" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-192x192.png"
+    sizes="192x192" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-128.png" sizes="128x128" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-32x32.png" sizes="32x32" />
+  <link rel="icon" type="image/png" href="//www-media.stanford.edu/assets/favicon/favicon-16x16.png" sizes="16x16" />
+
+  <link rel="mask-icon" href="//www-media.stanford.edu/assets/favicon/safari-pinned-tab.svg" color="#ffffff">
+  <meta name="application-name" content="Stanford University" />
+  <meta name="msapplication-TileColor" content="#FFFFFF" />
+  <meta name="msapplication-TileImage" content="//www-media.stanford.edu/assets/favicon/mstile-144x144.png" />
+  <meta name="msapplication-square70x70logo" content="//www-media.stanford.edu/assets/favicon/mstile-70x70.png" />
+  <meta name="msapplication-square150x150logo" content="//www-media.stanford.edu/assets/favicon/mstile-150x150.png" />
+  <meta name="msapplication-square310x310logo" content="//www-media.stanford.edu/assets/favicon/mstile-310x310.png" />
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QZ38WT2YPD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-QZ38WT2YPD');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <script src="https://kit.fontawesome.com/19914a84eb.js" crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+
+<section class="hero is-link is-fullheight video" style="overflow: hidden; position:relative;background-color:rgb(137, 194, 250)">
+  <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+    <video playsinline autoplay muted loop>
+      <source src=" ./static/videos/teaser-big.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="hero-video is-hidden-tablet is-inline-block-mobile"
+    style="height: 154.28571428vw; width: 100%; min-width:64.81481481vh;min-height:100%;">
+    <video playsinline autoplay muted loop>
+      <source src=" ./static/videos/teaser-big-mobile.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="overlay"></div>
+  <!-- Hero head: will stick at the top -->
+
+  <!-- Hero content: will be in the middle -->
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 12rem;">
+        Watch Less, Feel More
+      </h1>
+      <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 4rem;">
+        Sim-to-Real RL for Generalizable<br class="is-hidden-mobile"> Articulated Object Manipulation
+        <br class="is-hidden-mobile"> via Motion Adaptation and Impedance Control
+      </h1>
+      <!-- <h1 class="is-2 is-italic is-size-4-mobile" style="font-size: 2rem; opacity: 80%;">
+        Conference on Robot Learning 2024
+      </h1> -->
+      <div class="column has-text-centered is-hidden-mobile">
+        <div class="publication-links">
+          <!-- PDF Link. -->
+          <span class="link-block">
+            <a class="external-link button is-medium is-rounded">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a class="external-link button is-medium is-rounded">
+              <span class="icon">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <!-- Video Link. -->
+          <span class="link-block">
+            <a  class="external-link button is-medium is-rounded">
+              <span class="icon">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span>
+            </a>
+          </span>
+          <!-- Code Link. -->
+          <span class="link-block">
+            <a 
+              class="external-link button is-medium is-rounded">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+            </a>
+          </span>
+        </div>
+      </div>
+      <div class="column has-text-centered is-hidden-tablet">
+        <div class="publication-links">
+          <!-- PDF Link. -->
+          <span class="link-block">
+            <a class="external-link button is-normal is-rounded">
+              <span class="icon">
+                <img src="./static/images/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+            </a>
+          </span>
+          <span class="link-block">
+            <a class="external-link button is-normal is-rounded">
+              <span class="icon">
+                <img src="./static/images/arxiv.svg" alt="ArXiv" />
+              </span>
+              <span>arXiv</span>
+            </a>
+          </span>
+          <!-- Video Link. -->
+          <span class="link-block">
+            <a class="external-link button is-normal is-rounded">
+              <span class="icon">
+                <img src="./static/images/youtube.svg" alt="Youtube" />
+              </span>
+              <span>Video</span>
+            </a>
+          </span>
+          <!-- Code Link. -->
+          <span class="link-block">
+            <a
+              class="external-link button is-normal is-rounded">
+              <span class="icon">
+                <i class="fab fa-github"></i>
+              </span>
+              <span>Code</span>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Hero footer: will stick at the bottom -->
+  <!-- <div class="hero-foot is-hidden-mobile">
+    <nav class="tabs is-boxed is-fullwidth is-size-5">
+      <ul>
+        <li><a href="#umi">Robot Data without Robots</a></li>
+        <li><a href="#task-tracking">Task Tracking without Simulating Tasks</a></li>
+        <li><a href="#wbc">Whole-body Controller</a></li>
+        <li><a href="#hardware">Hardware & System</a></li>
+        <li><a href="#qa">Q & A</a></li>
+      </ul>
+    </nav>
+  </div> -->
+</section>
+
+<!-- <section class="section is-small" id="wbc">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <h2 class="title is-1 has-text-centered is-size-4-mobile ">🌏 Qualitative Results 🌏</h2> <br>
+
+
+        <div class="content has-text-justified">
+          <p>
+            We tested our policy with a wide range of unseen objects, varied in size, apperance, left-hinged right-hinged, stiffness in a large workspace.
+          </p>
+        </div>
+
+        <div class="columns is-centered">
+          <img src="./static/images/obj.png" width="95%" height="95%">
+        </div>   -->
+
+<section class="section is-small has-background-white" id="task-tracking">
+  <h2 class="title is-1 has-text-centered is-size-4-mobile">🧠 Intuition 🧠</h2> <br>
+    <div class="columns is-centered is-hidden-mobile">
+      <img src="./static/images/teaser_intuition.png" width="50%"> <br>
+    </div>
+    <div class="container is-max-desktop is-hidden-tablet">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths is-centered">
+          <div class="columns is-centered">
+            <img src="./static/images/teaser_intuition.png" height="95%">
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths has-text-justified is-hidden-mobile">
+        <h2 class="subtitle">
+          <strong>How do you open a door in the dark? 🌃</strong>
+        </h2>
+        <h2>
+          If I tell you where to grasp, and you should open to the left or to the right, how would you proceed?
+        </h2>
+        <h2>  
+          Yes, you can grasp the handle easily (as I told you where it is) and open the door by slowly adjusting your action according to the door's movement! So we believe that for grasping, vision 👁️ is crutial but for opening, it might not be the most important input!
+        </h2>
+        <br>
+        <h2 class="subtitle">
+          <strong>What is our approach?</strong>
+        </h2>
+        <h2>
+          We train an RL policy that can learn door motion from history observations and adaptively adjust its action. We use a closed-loop system equipped with 💫Impedance Control💫 for better sim-to-real and reach <strong>84%</strong> success rate for opening door <strong>in the real world!</strong>
+        </h2>
+      </div>
+
+      
+      <div class="column is-four-fifths is-hidden-tablet has-text-justified-mobile">
+        <p>
+          <strong>How do you open a door in the dark? </strong>
+          If I tell you where to grasp, and you should open to the left or to the right, how would you proceed?
+        </p>
+        <br>
+        <p>
+          Yes, you can grasp the handle easily (as I told you where it is) and open the door by slowly adjusting your action according to the door's movement! So we believe that for grasping, vision 👁️ is crutial but for opening, it might not be the most important input!
+        </p>
+        <br>
+        <p>
+          <strong>What is our approach?</strong>
+          We train an RL policy that can learn door motion from history observations and adaptively adjust its action. We use a closed-loop system equipped with 💫Impedance Control💫 for better sim-to-real and reach <strong>84%</strong> success rate for opening door <strong>in the real world!</strong>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section" id="video">
+  <div class="container is-max-desktop">
+    <h2 class="title is-1 has-text-centered is-size-4-mobile">🏂 Quick Summary 🏂</h2>
+    <!-- <iframe width="100%" style="aspect-ratio: 16 / 9;" src="
+      ./static/videos/summary.mp4" title="UMI on Legs Technical Summary Video"
+      frameborder="0"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> -->
+    <video poster="" id="sweep_without_exceeding" controls playsinline height="100%">
+      <source src="./static/videos/summary.mp4" type="video/mp4">
+    </video>
+  </div>
+</section>
+
+
+<div class="container is-max-desktop">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-1 has-text-centered is-size-4-mobile">🔥 Our pipeline 🔥</h2> <br>
+    </div>
+  </div>
+</div>
+
+<section class="section is-small" id="pipeline">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <div class="content">
+          <p>
+            <strong>Why articulated object manipulation is hard?</strong>
+            <ul>
+            <li>To safely open a door, you need to understand its articulation motion. This includes object weight, friction, pivot radius,... which we only know after interacting with the object</li>
+            <li>Therefore, using open-loop pipeline or predicting the action waypoint before-hand is not enough</li>
+            </ul>
+            <strong>But can we get these values from vision?</strong>
+            <ul>
+            <li>Ok let's say we have a constant visual feedback of during manipulation, will it help? You're now pretty sure that you grasped the door handle or even have it opened a bit. 
+            But the large vision sim2real gap makes it hard to generalize.</li>
+            <li>One more thing, this handle might be occluded in while opening, meaning that you have to find a good viewpoint to really capture things you need. Again not really generalizable.</li>
+            </ul>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>      
+
+<section class="section is-small has-background-white" id="task-tracking">
+  <div class="columns is-centered is-hidden-mobile">
+    <img src="./static/images/pipeline.png" width="50%"> <br>
+  </div>
+  <div class="container is-max-desktop is-hidden-tablet">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <div class="columns is-centered">
+          <img src="./static/images/pipeline.png" height="95%">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="pipeline">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <br>
+      <div class="column is-four-fifths">
+        <div class="content">
+          <p>
+            Here we try to make a shortcut to learn object motion without vision during <strong>the opening stage</strong>. Let's say we have <strong>a reliable grasping pose</strong> so that we can ensure that the grasping stage would be successful. Now we can think that the robot arm is sticked to the door handle, meaning that we can infer the handle position from the end-effector position (as well as its motion). We compare <strong>the true consequential positions of the handle</strong> and <strong>the actions that we applied</strong> to understand the articulation motion.
+          </p>
+          <p>
+            This is the idea behind <strong>Adaptation Module</strong> and <strong>Priviledge Observation Encoder</strong>, which are also introduced in many locomotion pipelines.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <video autoplay muted loop playsinline width="100%">
+  <source src="./static/videos/umi-grid-small.mp4" type="video/mp4">
+</video> -->
+
+<!-- 
+  <section class="section is-small" id="umi">
+    <div class="container is-max-desktop">
+
+      <h2 class="title is-1">Robot Data without Robots</h2>
+      <div class="content has-text-justified">
+        <p>
+          Robots are the reason why it's been hard to collect a lot of robot data.
+          They are expensive 💸, tricky to control for dexterous tasks 🎾, and can punch a hole in the wall (or
+          itself) if you're not
+          careful ☠️.
+          What if we could collect robot data without robots?
+        </p>
+      </div>
+
+      <video autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/umi-website.mp4" type="video/mp4">
+      </video>
+      <div class="content has-text-justified">
+        <p>
+          <a href="https://umi-gripper.github.io/">UMI</a> is a handheld gripper with a
+          GoPro attached.
+          With UMI, we can collect real-world robot demonstrations anywhere for any manipulation skill,
+          without any robots.
+        </p>
+      </div>
+
+    </div>
+  </section> -->
+
+<!-- <section class="section is-large" id="overview">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column has-text-justified is-four-fifths  is-hidden-mobile">
+        <h2 class="subtitle">
+          Training on UMI demonstrations gives a policy that outputs gripper movements from image inputs.
+          But how should the dog's legs move to track those gripper movements? 🤔
+        </h2>
+      </div>
+      <div class="column has-text-justified is-four-fifths is-hidden-tablet">
+        <p>
+          Training on UMI demonstrations gives a policy that outputs gripper movements from image inputs.
+          But how should the dog's legs move to track those gripper movements? 🤔
+        </p>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+<section class="section is-small has-background-black has-text-light" id="task-tracking">
+<div class="container is-max-desktop has-background-black has-text-light">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths">
+      <h2 class="title is-1 has-text-centered is-size-4-mobile has-text-white">🦾 Train in Simulation 🦾</h2> <br>
+    </div>
+  </div>
+</div>
+
+<div class="container is-max-desktop has-background-black has-text-white">
+  <div class="columns is-centered">
+    <div class="column is-four-fifths">
+      <div class="content has-text-justified">
+      <h4 style="color:white">
+        <b>But how do you use vision in the simulation? Do you distill it?</b>
+      </h4>
+      <p>
+        Our training in simulation is entirely "state-based". In the real world, the key value that we miss is the handle position. But in simulation, we can directly query it anytime, anywhere. In the real world, we infer this handle position from end-effector pose, meaning that we can skip vision for good.
+      </p>
+      <p>
+        Thanks to this, we learn a smooth and continous <b>action motion that follow the true motion of the object</b> with 💫Impedance Control💫. Its high tolerance help us adaptively learn object motion and adjust our actions.
+      </p>
+      </div>
+
+      <div class="content has-text-justified has-text-white">
+        <h4 style="color:white">
+          <b>How's your training different from other state-based policies?</b>
+        </h4>
+        <p>
+          We care about realistic embodiments. We don't use flying gripper or movable Franka and we control the controller parameter so that the robot-object interaction would stay close to what would happend in the real world. Most of the time, the Franka movement in the simulation is relaxed too much, allowing the policy to learn dangerous or even impossible configuration. Also, we set a reasonable workspace so that it can directly sim2real.
+        </p>
+        <p>
+          But these contraints would inevitably make the training harder. We design a stage-aware reward system that make our motion continous and smooth, following the reach-grasp-open order.
+        </p>
+        </div>
+    </div>
+  </div>
+</div>
+</section>
+<section class="section is-small has-background-black has-text-light" id="task-tracking">
+  <div class="container is-max-desktop has-background-black has-text-light">
+    <!-- <div class="columns is-centered">
+      <div class="column is-four-fifths"> -->
+        <div class="content has-text-justified">
+          <video autoplay muted loop playsinline width="100%">
+            <source src="./static/videos/sim-big.mp4" type="video/mp4">
+          </video>
+        </div>
+      <!-- </div>
+    </div>   -->
+  </div>
+</section>
+
+
+
+<section class="section is-small" id="wbc">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <h2 class="title is-1 has-text-centered is-size-4-mobile ">🌏 Qualitative Results 🌏</h2> <br>
+
+
+        <div class="content has-text-justified">
+          <p>
+            We tested our policy with a wide range of unseen objects, varied in size, apperance, left-hinged right-hinged, stiffness in a large workspace.
+          </p>
+        </div>
+
+        <div class="columns is-centered">
+          <img src="./static/images/obj.png" height="95%">
+        </div>  
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            Our policy generates smooth and continous motion, which show high tolerance to object's motion. This video is captured in <strong>1X</strong>.
+          </p>
+        </div>
+
+        <video autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/real_rollout/rollout_1.mp4" type="video/mp4">
+        </video>
+
+        <br>
+        <div class="content has-text-justified">
+          <p>
+            As we use vision only at the first frame, our policy is very robust. We capture 1 RGBD image, infer a grasping pose and then directly rollout our policy. It can reach human's speed without significant lagging phases as with waypoints. 
+          </p>
+        </div>
+
+        <video autoplay muted loop playsinline height="100%">
+          <source src="./static/videos/real_rollout/timelapse.mov" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero is-light is-small">
+  <div class="hero-body">
+    <h2 class="title is-2 has-text-centered is-size-4-mobile ">Some more Rollouts</h2> <br>
+    <div class="container">
+      <div id="results-carousel" class="carousel results-carousel">
+        <div class="item item-sweep_without_exceeding">
+          <video poster="" id="sweep_without_exceeding" autoplay controls muted loop height="100%" playbackRate=2.0>
+            <source src="./static/videos/real_rollout/rollout_2.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-sweep_without_touching">
+          <video poster="" id="sweep_without_touching" autoplay controls muted loop height="100%" playbackRate=2.0>
+            <source src="./static/videos/real_rollout/rollout_3.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-rotate">
+          <video poster="" id="rotate" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_4.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-scene_understanding">
+          <video poster="" id="scene_understanding" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_5.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-simple_manipulation">
+          <video poster="" id="simple_manipulation" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_6.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-novel_adj">
+          <video poster="" id="novel_adj" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_7.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-novel_adj">
+          <video poster="" id="novel_adj" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_8.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-novel_adj">
+          <video poster="" id="novel_adj" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_9.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-novel_adj">
+          <video poster="" id="novel_adj" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_10.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="item item-novel_adj">
+          <video poster="" id="novel_adj" autoplay controls muted loop height="100%">
+            <source src="./static/videos/real_rollout/rollout_11.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small" id="wbc">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths is-centered">
+        <h2 class="title is-1 has-text-centered is-size-4-mobile ">⛓️‍💥 Failure Cases ⛓️‍💥</h2> <br>
+
+
+        <div class="content has-text-justified">
+          <p>
+            VIDEOS GO HERE
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section is-small">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 is-size-4-mobile">Our Team</h2>
+    <div class="container has-text-centered">
+      <div class="publication-authors is-flex justify-content is-justify-content-space-around is-hidden-mobile">
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image is-128x128">
+            <a href="https://dotandung.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/tandzungdo.jpg" alt="Tan-Dzung Do">
+            </a>
+          </figure>
+          <a href="https://dotandung.github.io/">Tan-Dzung Do</a><sup>1,2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image is-128x128">
+            <a href="">
+              <img class="is-rounded
+                      " src="./static/images/gireesh.png" alt="Gireesh Nandiraju">
+            </a>
+          </figure>
+          <a href="https://user432.github.io/">Gireesh Nandiraju</a><sup>1,2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image is-128x128">
+            <a href="https://42jaylonw.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/jilongwang.png" alt="Jilong Wang">
+            </a>
+          </figure>
+          <a href="https://42jaylonw.github.io/">Jilong Wang</a><sup>2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image is-128x128">
+            <a href="https://hughw19.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/hewang.jpg" alt="He Wang">
+            </a>
+          </figure>
+          <a href="https://hughw19.github.io/">He Wang</a><sup>1,2</sup>
+        </div>
+      </div>
+
+      <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-evenly is-hidden-tablet">
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image  is-96x96">
+            <a href="https://dotandung.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/tandzungdo.jpg" alt="Tan-Dzung Do">
+            </a>
+          </figure>
+          <a href="https://dotandung.github.io/">Tan-Dzung Do</a><sup>1,2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image  is-96x96">
+            <a href="https://user432.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/gireesh.png" alt="Gireesh Nandiraju">
+            </a>
+          </figure>
+          <a href="https://user432.github.io/">Gireesh</a><sup>1,2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image is-96x96">
+            <a href="https://42jaylonw.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/jilongwang.png" alt="Jilong Wang">
+            </a>
+          </figure>
+          <a href="https://42jaylonw.github.io/">Jilong Wang</a><sup>2</sup>
+        </div>
+        <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image  is-96x96">
+            <a href="https://hughw19.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/hewang.jpg" alt="He Wang">
+            </a>
+          </figure>
+          <a href="https://hughw19.github.io/">He Wang</a><sup>1,2</sup>
+        </div>
+        <!-- <div class="author-block has-text-centered has-addons-centered">
+          <figure class="image  is-96x96">
+            <a href="https://shurans.github.io/">
+              <img class="is-rounded
+                      " src="./static/images/shuran.jpg" alt="Shuran Song">
+            </a>
+          </figure>
+          <a href="https://shurans.github.io/">Shuran Song</a><sup>1,2</sup>
+        </div> -->
+      </div>
+
+
+
+      <div class="publication-authors">
+        <span class="author-block"><sup>1</sup>Peking University, </span>
+        <span class="author-block"><sup>2</sup>Galbot, </span>
+      </div>
+
+
+    </div>
+    <br>
+    <!-- <pre class="is-hidden-mobile"><code>@inproceedings{ha2024umilegs,
+  title={{UMI} on Legs: Making Manipulation Policies Mobile with Manipulation-Centric Whole-body Controllers}, 
+  author={Huy Ha and Yihuai Gao and Zipeng Fu and Jie Tan and Shuran Song},
+  year={2024},
+  booktitle={Proceedings of the 2024 Conference on Robot Learning},
+}</code></pre> -->
+    <p>
+      If you have any questions, please contact <a href="https://dotandung.github.io/">Tan-Dzung Do</a>
+    </p>
+  </div>
+</section>
+
+
+
+<!-- <section class="section is-small" id="qa">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered ">
+      <div class="column is-four-fifths">
+        <h2 class="title is-4 has-text-centered is-size-5-mobile">Questions & Answers</h2>
+
+        <div class="block">
+          <h3 class="title is-6">
+            What can't this framework do?
+          </h3>
+          <p>
+            There is only a one-way communication from the manipulation visuo-motor policy to the whole-body
+            controller,
+            via an end-effector trajectory interface. This has two main drawbacks:<br><br>
+            <b>(1) Guarantee Reachability</b>.
+            Sometimes the manipulation policy would ask the controller to move to target poses it can't track, like
+            ones
+            that are too high or rotate the gripper by too much.
+            Ideally, the controller could communicate to the manipulation policy what the
+            hardware is capable of as well.
+            <br><br>
+            <b>(2) Track Multiple End-effectors</b>.
+            Ideally, our robots would involve their entire body in manipulation tasks, not just its gripper.
+            Towards involving the robot's feet, body, and arms in manipulation as well, the real-world data collection
+            platform,
+            manipulation-controller interface, and the whole-body controller formulation has some work to do.
+          </p>
+        </div>
+
+        <div class="block">
+          <h3 class="title is-6">
+            I want to build a foundation policy for robotics.
+            What can UMI on Legs teach me about how to go about it?
+          </h3>
+          <p>
+            Tossing was flashy, but the in-the-wild cup rearrangement task (shown below) changed my perspective on what
+            a foundation policy for robotics should look like.
+            <video autoplay muted loop playsinline width="100%">
+              <source src="./static/videos/cup-in-the-wild-small.mp4" type="video/mp4">
+            </video>
+            We were able to just plug-and-play UMI's publicly released policy onto our robot dog (seen above in 1x
+            speed)!
+            With an expressive embodiment-agnostic interface in place, I'm optimistic about a world where people can
+            separately develop ever more general
+            visuo-motor policies and ever more robust WBCs, knowing that they can be plugged-and-played together in the
+            end.
+
+          </p>
+        </div>
+
+
+        <div class="block">
+          <h3 class="title is-6">
+            Can learning to track end-effector trajectories <i>really</i> result in kettlebell pushing?
+          </h3>
+          <p>
+            Yes, and no 🙃 Let me explain.<br><br>
+            Yes, because the kettlebell does get pushed to its target zone in our experiments, which technically
+            counts
+            as a success.
+            No, because the robot's behavior was not very elegant, despite the hardware being physically capable of
+            much
+            smoother, stronger pushes.
+            We've included mass, center of mass, and other joint domain randomization during training, but additionally
+            including force-torque perturbations at the end-effector during WBC
+            training could address take us a step closer to more robust pushing behaviors.
+          </p>
+        </div>
+
+
+        <div id="visualization-qa" class="block">
+          <h3 class="title is-6">What simulator do you use? Why does it look so realistic?</h3>
+          <p>
+            In this project, I use the <a href="https://developer.nvidia.com/isaac-gym">IsaacGym simulator</a> for
+            physics, but like many of my prior works, I use <a href="https://www.blender.org/">Blender</a> for
+            rendering (e.g., <a href="https://www.cs.columbia.edu/~huy/scalingup/">Scaling Up</a>, <a
+              href="https://flingbot.cs.columbia.edu/">FlingBot</a>).
+          </p>
+          <br>
+          <p>
+            Also, as in my prior works, I've published instructions for importing simulations into Blender.
+            If you're using IsaacGym, you can refer to this <a
+              href="https://github.com/real-stanford/umi-on-legs">project's codebase</a>.
+            If you're using PyBullet, you can use <a href="https://github.com/huy-ha/pybullet-blender-recorder">this
+              plugin</a> I developed for my <a href="https://github.com/real-stanford/decentralized-multiarm">multi-arm
+              motion planning project</a>.
+            If you're using MuJoCo, you can refer to the visualization instructions on my <a
+              href="https://github.com/real-stanford/scalingup/blob/master/docs/visualization.md">Scaling Up</a>'s
+            codebase.
+          </p>
+        </div>
+
+
+
+        <div class="block" id="wbc-prior-works">
+          <h3 class="title is-6">
+            Isn't this just <a href="https://manipulation-locomotion.github.io/">DeepWBC</a> or <a
+              href="https://wholebody-b1.github.io/">Visual Whole-Body Control</a>?
+          </h3>
+          <p>
+            These whole-body controllers are not manipulation-centric - they do not track end-effector trajectories in
+            task-frame.
+            Instead, they track instantaneous end-effector targets in body-frame, and depend on the quadruped's base
+            command.
+            This means their controllers can't be used to deploy existing table-top visuo-motor manipulation policies.
+          </p>
+        </div>
+      </div>
+</section>
+ -->
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            Website template modified from <a href="https://nerfies.github.io/">NeRFies</a> and <a
+              href="https://umi-on-legs.github.io/">UMI on Legs</a>.
+          </p>
+          <p>
+            This website is licensed under a <a rel="license"
+              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+              Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            This means you are free to borrow and modify the <a
+              href="https://github.com/nerfies/nerfies.github.io">source
+              code</a> of this website as long as
+            you link back to the <a href="https://nerfies.github.io/">NeRFies</a> page in the footer.
+            Please remember to remove the analytics code included in the header of the website which
+            you do not want on your website.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+
+</html>
